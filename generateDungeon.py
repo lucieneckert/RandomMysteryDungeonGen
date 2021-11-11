@@ -70,6 +70,50 @@ def createDungeonSnapshot(shape):
     return dungeon  
 
 '''
+    addWallResolution(dungeon) takes a SIMPLE dungeon
+    (where 1 = floor, 0 = wall) and returns a dungeon with higher-
+    resolution walls (corners, etc.)
+    Returns a 2d numpy array of shape dungeon.shape
+'''
+def addWallResolution(dungeon):
+    output = np.copy(dungeon)
+    (width, height) = dungeon.shape
+    for x, y in np.ndindex(dungeon.shape):
+        tile = dungeon[x, y]
+        '''
+            Key (idx -> meaning):
+            0: inner wall
+            1: floor
+            2: wall above adjacent floor 
+            3: wall right of adjacent floor
+            4: wall below adjacent floor
+            5: wall left of adjacent floor
+            6: TL corner wall
+            7: TR corner wall
+            8: BL corner wall
+            9: BR corner wall
+        '''
+        tileValues = [1] * 11
+        if tile < 1:
+            # Use neighbors to remove illegal value possibilities
+            if y + 1 < height and dungeon[x, y + 1] > 0:
+                for idx in [0, 1, 3, 4, 5, 8, 9]:
+                    tileValues[idx] = 0
+            if y - 1 >= 0 and dungeon[x, y - 1] > 0:
+                for idx in [0, 1, 3, 2, 5, 6, 7]:
+                    tileValues[idx] = 0
+            if x + 1 < width and dungeon[x + 1, y] > 0:
+                for idx in [0, 1, 2, 3, 4, 7, 9]:
+                    tileValues[idx] = 0
+            if x - 1 >= 0 and dungeon[x - 1, y] > 0:
+                for idx in [0, 1, 2, 4, 5, 6, 8]:
+                    tileValues[idx] = 0
+            # Set the tile value to the first legal value
+            output[x, y] = tileValues.index(1)
+    return output
+         
+
+'''
     generateRoom(roomType, maxSize) creates an array "room."
     Precondition: maxSize must be bigger than (3, 3).
     Returns a numpy array representing the room
@@ -86,4 +130,5 @@ def generateRoom(roomType, maxSize):
     return room
 
 # Test the code
-createDungeonSnapshot((8, 10))
+dungeon = createDungeonSnapshot((8, 10))
+print(addWallResolution(dungeon))
