@@ -1,4 +1,4 @@
-from generateDungeon import createDungeonSnapshot, addWallResolution
+from generateDungeon import Dungeon
 from PIL import Image
 import numpy as np
 
@@ -12,7 +12,10 @@ TLwallTilePath = "tiles/test-TLwall.png"
 TRwallTilePath = "tiles/test-TRwall.png"
 TwallTilePath = "tiles/test-Twall.png"
 BwallTilePath = "tiles/test-Bwall.png"
-
+TLcornerWallTilePath = "tiles/test-TLcornerWall.png"
+TRcornerWallTilePath = "tiles/test-TRcornerWall.png"
+BLcornerWallTilePath = "tiles/test-BLcornerWall.png"
+BRcornerWallTilePath = "tiles/test-BRcornerWall.png"
 
 
 getTileFromValue = {
@@ -26,10 +29,16 @@ getTileFromValue = {
     7: TRwallTilePath,
     8: BLwallTilePath,
     9: BRwallTilePath,
-    10: groundTilePath,
+    10: TLcornerWallTilePath,
+    11: TRcornerWallTilePath,
+    12: BLcornerWallTilePath,
+    13: BRcornerWallTilePath,
+    14: groundTilePath,
 }
 
 def imageFromDungeon(dungeon):
+    # Access the dungeon's array
+    dungeon = dungeon.as_tileset_array()
     # Load ground and wall tiles
     wall = Image.open(wallTilePath)
     ground = Image.open(groundTilePath)
@@ -43,5 +52,5 @@ def imageFromDungeon(dungeon):
     image.show()
 
 # Testing:
-dungeon = addWallResolution(createDungeonSnapshot([10, 8]))
+dungeon = Dungeon([25, 10])
 imageFromDungeon(dungeon)
