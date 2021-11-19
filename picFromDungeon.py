@@ -18,7 +18,7 @@ BLcornerWallTilePath = "tiles/test-BLcornerWall.png"
 BRcornerWallTilePath = "tiles/test-BRcornerWall.png"
 
 
-getTileFromValue = {
+tile_path_from_value = {
     0: wallTilePath,
     1: groundTilePath,
     2: TwallTilePath,
@@ -36,21 +36,18 @@ getTileFromValue = {
     14: groundTilePath,
 }
 
-def imageFromDungeon(dungeon):
+def image_from_dungeon(dungeon):
     # Access the dungeon's array
     dungeon = dungeon.as_tileset_array()
-    # Load ground and wall tiles
-    wall = Image.open(wallTilePath)
-    ground = Image.open(groundTilePath)
     # Each tile is 32x32
     image = Image.new("RGB", (32 * dungeon.shape[0], 32 * dungeon.shape[1]))
     # TODO: Iterate over the tiles in the dungeon, paste images
     for x, y in np.ndindex(dungeon.shape):
-        tile = Image.open(getTileFromValue[dungeon[x, y]])
+        tile = Image.open(tile_path_from_value[dungeon[x, y]])
         image.paste(tile, (32 * x, 32 * y))
     # Show the generated image
     image.show()
 
 # Testing:
-dungeon = Dungeon([25, 10])
-imageFromDungeon(dungeon)
+dungeon = Dungeon([15, 8])
+image_from_dungeon(dungeon)
