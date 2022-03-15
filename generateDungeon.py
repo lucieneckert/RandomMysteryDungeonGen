@@ -40,17 +40,17 @@ def create_dungeon_snapshot(shape):
         dungeon += main_room
         dungeon[(1 < dungeon)] = 1
     # Generate 2-4 halls out
-    for _ in range(random.randint(2, 4)):
+    for _ in range(random.randint(4, 8)):
         # Find a point to "tunnel" out of
         point = [random.randrange(0, shape[0]), random.randrange(0, shape[1])]
-        # Make sure it's a floor
+        # Make sure it's a floor, python really has no do while loop huh
         while dungeon[point[0], point[1]] != 1:
             point = [random.randrange(0, shape[0]), random.randrange(0, shape[1])]
         # Choose a direction for the tunnel
         dir = random.randint(0, 3) # 0 = up, go clockwise
         # TODO: Get python 3.10 already stubborn asshole
         if dir == 0:
-            while (point[1] > 0):
+            while (point[1] >= 0):
                 dungeon[point[0], point[1]] = 1
                 point[1] -= 1
         elif dir == 1:
@@ -62,7 +62,7 @@ def create_dungeon_snapshot(shape):
                 dungeon[point[0], point[1]] = 1
                 point[1] += 1
         elif dir == 3:
-            while (point[0] > 0):
+            while (point[0] >= 0):
                 dungeon[point[0], point[1]] = 1
                 point[0] -= 1
     return dungeon  
